@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>New Match</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+
+
+<ion-list>
+<ion-item *ngIf="!isConnected">
+      <button ion-button positive (click)="scanDevices()">
+          Scan for Hashtag Device
+        </button>
+</ion-item>
+
+<ion-item>
+  <ion-card *ngFor="let device of devices">
+    <ion-card-header>
+      {{device.name}}
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-row>
+        <ion-col>
+          {{device.id}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button ion-button icon-left clear small>
+            <ion-icon name="ion-connection-bars"></ion-icon>
+            <div>{{device.rssi}}</div>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-left clear small (click)="openDevicePage(device.id)">
+            <ion-icon name="ion-link"></ion-icon>
+            <div>connect</div>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+
+  </ion-card>
+</ion-item>
+
+
+   <button ion-button clear (click)="readData()">
+  Sync Hashtag Stats
+  </button>
+
+
+
+</ion-list>
+
+  <ion-item>
+    <ion-label stacked>Enter Match details</ion-label>
+    <ion-input [(ngModel)]="eventName" type="text" placeholder="Intel vs AMD">
+    </ion-input>
+  </ion-item>
+
+
+  <ion-item>
+    <ion-label>Match Date</ion-label>
+    <ion-datetime displayFormat="D MMM, YY" pickerFormat="DD MMM YYYY" [(ngModel)]="eventDate">
+    </ion-datetime>
+  </ion-item>
+
+<ion-item>Tags: {{tagNum}}</ion-item>
+<ion-item>Distance: {{steps* 0.74 }}m</ion-item>
+
+  <button ion-button block (click)="createEvent(eventName, eventDate, eventCost)">
+    Add Game Stats
+  </button>
+</ion-content>

@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Matches Played</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+ 
+  
+<ion-content class="card-background-page">
+
+
+    <ion-card *ngFor="let event of eventList" (click)="goToEventDetail(event.id)">
+      <img src="img/rugby.jpg"/>
+    <div class="card-title">{{event?.name}}</div>
+    <div class="card-subtitle">{{event?.date}}</div>
+    </ion-card>
+
+</ion-content>

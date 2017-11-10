@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{currentEvent?.name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+      <ion-card>
+      <ion-card-header>
+        Tags Received
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #doughnutCanvas></canvas>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+       Distance Covered
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #barCanvas></canvas>
+      </ion-card-content>
+    </ion-card>
+
+
+  <ion-card>
+    <ion-card-header>
+      Game Summary
+    </ion-card-header>
+    <ion-card-content>
+      <p>Distance: <strong>{{currentEvent?.steps*0.762 }}m</strong></p>
+      <p>Tags: 3<strong>{{currentEvent?.tagNum}} </strong></p>
+      <p>Date: <strong>{{currentEvent?.date}}</strong></p>
+    </ion-card-content>
+  </ion-card>
+
+
+</ion-content>
