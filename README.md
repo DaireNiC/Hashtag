@@ -1,7 +1,8 @@
-Ionic App Base
+Hashtag
 =====================
 
-This is the base template for Ionic starter apps.
+This Ionic 2 app complements an Arduino Tiny Tile. 
+
 
 ## Using this project
 
