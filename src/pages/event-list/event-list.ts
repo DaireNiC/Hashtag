@@ -17,9 +17,6 @@ export class EventListPage {
   constructor(public navCtrl: NavController, public eventProvider: EventProvider) {}
 
   ionViewDidEnter() {
-  
-
-
 
     this.eventProvider.getEventList().on('value', snapshot => {
       this.eventList = [];

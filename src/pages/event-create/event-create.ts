@@ -1,19 +1,29 @@
-import { Component, NgZone } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
-import { EventProvider } from '../../providers/event/event';
-import { BLE} from 'ionic-native';
+import {
+    Component,
+    NgZone
+} from '@angular/core';
+import {
+    IonicPage,
+    NavController
+} from 'ionic-angular';
+import {
+    EventProvider
+} from '../../providers/event/event';
+import {
+    BLE
+} from 'ionic-native';
 
 
 @IonicPage({
-  name: 'event-create'
+    name: 'event-create'
 })
 @Component({
-  selector: 'page-event-create',
-  templateUrl: 'event-create.html',
+    selector: 'page-event-create',
+    templateUrl: 'event-create.html',
 })
 export class EventCreatePage {
 
-   devices: any;
+    devices: any;
     deviceID: any;
     deviceName: any;
     isConnected: boolean;
@@ -21,40 +31,39 @@ export class EventCreatePage {
     public tagNum: number;
     public steps: any;
 
-        //id for ccommunication arduino & android
+    //id for ccommunication arduino & android
     service_UUID = "19B10010-E8F2-537E-4F6C-D104768A1214";
     color_UUID = "19B10011-E8F2-537E-4F6C-D104768A1214";
 
 
-  constructor(  private zone: NgZone,public navCtrl: NavController, public eventProvider: EventProvider) {
+    constructor(private zone: NgZone, public navCtrl: NavController, public eventProvider: EventProvider) {
         this.devices = [];
         this.isConnected = false;
 
-  }
-
-
-  resetBLE(){
-        this.devices = [];
-         this.scanDevices();
-         this.isConnected = false;       
     }
-    scanDevices() {      
+
+    resetBLE() {
+        this.devices = [];
+        this.scanDevices();
+        this.isConnected = false;
+    }
+    scanDevices() {
         if (BLE.isEnabled) {
             BLE.enable();
         }
 
 
-            BLE.scan([], 20).subscribe((device) => {
-                console.log(JSON.stringify(device));
-                this.zone.run(() => { //running inside the zone because otherwise the view is not updated
-                    this.devices.push(device)
-                });
-            }, function(error) {
-                console.log(error);
+        BLE.scan([], 20).subscribe((device) => {
+            console.log(JSON.stringify(device));
+            this.zone.run(() => { //running inside the zone because otherwise the view is not updated
+                this.devices.push(device)
             });
+        }, function(error) {
+            console.log(error);
+        });
 
-            console.log(this.devices);
-        
+        console.log(this.devices);
+
     }
 
 
@@ -64,26 +73,26 @@ export class EventCreatePage {
         this.connect(this.deviceID);
     }
     connect(id) {
-        BLE.connect(id).subscribe (
-          peripheralData => {
-                    alert("Connected!");
-                        BLE.read(this.deviceID, this.service_UUID, this.color_UUID).then( (buffer)=>{
-                         //convert bytes to string   
-                        var convertData = String.fromCharCode.apply(null, new Uint8Array(buffer));
-                          var data = [];
-                          for (var i = 0; i < convertData.length; i++) {
-                            var resultNumber = convertData.charCodeAt(i);
-                            data[i] = (resultNumber.toString());
-                           // alert("data from BLE:  " + data[i]);
-                        }
-                        this.tagNum = data[0];
-      //                  alert("first BLE stat" + this.tagNum);
-                        }, function(error) {
-                          alert("Error Reading data" + JSON.stringify(error));
-                        });
-                    },
-                error => alert("Error Connecting" + JSON.stringify(error))
-                );      
+        BLE.connect(id).subscribe(
+            peripheralData => {
+                alert("Connected!");
+                BLE.read(this.deviceID, this.service_UUID, this.color_UUID).then((buffer) => {
+                    //convert bytes to string   
+                    var convertData = String.fromCharCode.apply(null, new Uint8Array(buffer));
+                    var data = [];
+                    for (var i = 0; i < convertData.length; i++) {
+                        var resultNumber = convertData.charCodeAt(i);
+                        data[i] = (resultNumber.toString());
+                        // alert("data from BLE:  " + data[i]);
+                    }
+                    this.tagNum = data[0];
+                    //                  alert("first BLE stat" + this.tagNum);
+                }, function(error) {
+                    alert("Error Reading data" + JSON.stringify(error));
+                });
+            },
+            error => alert("Error Connecting" + JSON.stringify(error))
+        );
     }
 
     checkConnection() {
@@ -100,33 +109,33 @@ export class EventCreatePage {
     readData() {
         var data = [];
         BLE.read(this.deviceID, this.service_UUID, this.color_UUID)
-            .then( (buffer)=> {
+            .then((buffer) => {
 
-                //convert bytes to string   \aw
-                
-                var convertData = String.fromCharCode.apply(null, new Uint8Array(buffer));
+                    //convert bytes to string   \aw
 
-                for (var i = 0; i < convertData.length; i++) {
-                    var resultNumber = convertData.charCodeAt(i);
-                    data[i] = (resultNumber.toString());
-                   // alert("data from BLE:  " + data[i]);
-                }
-                //update values in view
-                this.tagNum = data[0];
-                this.steps = data[1];
-            },
-            (error) => {
-                console.log(error);
-                alert("Try again! :)");
-            });
+                    var convertData = String.fromCharCode.apply(null, new Uint8Array(buffer));
+
+                    for (var i = 0; i < convertData.length; i++) {
+                        var resultNumber = convertData.charCodeAt(i);
+                        data[i] = (resultNumber.toString());
+                        // alert("data from BLE:  " + data[i]);
+                    }
+                    //update values in view
+                    this.tagNum = data[0];
+                    this.steps = data[1];
+                },
+                (error) => {
+                    console.log(error);
+                    alert("Try again! :)");
+                });
     } //read data 
 
 
-  createEvent(eventName: string, eventDate: string, eventCost: number) {
-   
-    this.eventProvider.createEvent(eventName, eventDate,this.tagNum,this.steps)
-    .then( newEvent => {
-      this.navCtrl.pop();
-    });
-  }
+    createEvent(eventName: string, eventDate: string, eventCost: number) {
+
+        this.eventProvider.createEvent(eventName, eventDate, this.tagNum, this.steps)
+            .then(newEvent => {
+                this.navCtrl.pop();
+            });
+    }
 }

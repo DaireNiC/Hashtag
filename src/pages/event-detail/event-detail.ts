@@ -13,9 +13,11 @@ import { Chart } from 'chart.js';
   templateUrl: 'event-detail.html',
 })
 export class EventDetailPage {
+    
   public currentEvent: any = {};
   public guestName:string = '';
   public guestPicture:string = null;
+
   @ViewChild('barCanvas') barCanvas;
   @ViewChild('barCanvas') barCanvas2;
   @ViewChild('doughnutCanvas') doughnutCanvas;
@@ -106,8 +108,6 @@ export class EventDetailPage {
         });
 
   }
-
-
   takePicture(){
     this.cameraPlugin.getPicture({
       quality : 95,
